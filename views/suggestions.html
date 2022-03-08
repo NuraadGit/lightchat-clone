@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="stylesheet" type="text/css" href="/suggestions.css" /> 
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="idk" />
+
+    <meta property="og:title" content="LightChat Suggestions" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lightchat.ml/suggestions.html" />
+    <meta property="og:description" content="Suggest Ideas for LightChat" />
+    <meta
+      property="og:image"
+      content="https://cdn.glitch.com/11998fd5-409b-4fca-a81b-3327324e7c93%2Fa4ee71f481b6445da1cf88f8e4cd3983.png?v=1626225572793"
+    />
+    <meta name="theme-color" content="#66C0FF" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://cdn.glitch.com/11998fd5-409b-4fca-a81b-3327324e7c93%2Fa4ee71f481b6445da1cf88f8e4cd3983%20(1).png?v=1626225577574"
+    />
+
+    <title>Suggestions | LightChat</title>
+  </head>
+  <body>
+    <div id="info">
+      <h1 id="top">
+        Suggest a new LightChat feature!
+      </h1>
+    </div>
+    <noscript>
+      <div class="javascriptNotEnabledWarning">
+        <span style="font-size: 64px;">You don't have JavaScript enabled.</span>
+        <br>
+        <span style="font-size: 30px;">Since this uses JavaScript to send/receive messages from the server, you won't be able to use it until you enable JavaScript.</span>
+      </div>
+      <style type="text/css">
+        #sugFormContainer { display:none; }
+      </style>
+    </noscript>
+    <div id="sugFormContainer">
+      <form id="suggestionsForm" action="/suggestions">
+        Give us a way to contact you if needed (such as your Discord username)
+        <input id="contact">
+        <br><br>
+        Enter your suggestion (Be detailed):
+        <br>
+        <textarea id="suggestion" rows="10" cols="40" required></textarea>
+        <br>
+        <button id="btnSuggest">Suggest</button>
+      </form>
+      <br>
+      <div id="suggestionSent">
+        Your suggestion was succesfully sent!
+        <br>
+        <a href="/">Back to main page</a>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      
+      var suggestionsForm = document.getElementById("suggestionsForm");
+      
+      suggestionsForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        
+        var contact = document.getElementById("contact").value || "Didn't give anything";
+        var suggestion = document.getElementById("suggestion").value;
+        
+        socket.emit("suggestion", contact, suggestion);
+        
+        document.getElementById("contact").value = "";
+        document.getElementById("suggestion").value = "";
+        
+        document.getElementById("suggestionSent").style.display = "block";
+      });
+    </script>
+  </body>
+</html>
